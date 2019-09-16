@@ -80,7 +80,21 @@ public class AEDD2Libreria {
         //list2.forEach(palabra -> System.out.println(palabra));
 
         TArbolTrie trieIP = new TArbolTrie();
-        trieIP.insertar("192.168.1.1");
+        trieIP.insertarIP("010.024.007.024-Dispositivo 1");
+        trieIP.insertarIP("010.024.007.025-Dispositivo 2");
+        trieIP.insertarIP("010.024.007.026-Dispositivo 3");
+        trieIP.insertarIP("010.024.007.027-Dispositivo 4");
+        trieIP.insertarIP("010.024.008.024-Dispositivo 5");
+        trieIP.insertarIP("010.251.008.037-Dispositivo 6");
+        trieIP.insertarIP("010.251.008.038-Dispositivo 7");
+        trieIP.insertarIP("010.251.008.039-Dispositivo 8");
+        
+        //trieIP.imprimirIP();
+        //System.err.println(trieIP.buscarIP("010.251.008.037"));
+        //System.err.println(trieIP.buscarIP("010.251.008.700"));
+        trieIP.predecirIP("010.024.007").forEach(ip->System.out.println(ip));
+        trieIP.predecirIP("010.024.008").forEach(ip->System.out.println(ip));
+        
     }
 
 }

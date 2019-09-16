@@ -1,11 +1,8 @@
 package UT03;
 
-
-
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class TArbolTrie implements ITArbolTrie {
 
@@ -28,8 +25,7 @@ public class TArbolTrie implements ITArbolTrie {
 
     @Override
     public int buscar(String palabra) {
-        if (raiz!=null)
-        {
+        if (raiz != null) {
             return raiz.buscar(palabra.toLowerCase());
         }
         return 0;
@@ -38,13 +34,12 @@ public class TArbolTrie implements ITArbolTrie {
     @Override
     public LinkedList<String> predecir(String prefijo) {
         LinkedList<String> lista = new LinkedList<>();
-        if (raiz!=null)
-        {
+        if (raiz != null) {
             raiz.predecir(prefijo.toLowerCase(), lista);
         }
         return lista;
     }
-    
+
     //HASH FUNCTIONS
     @Override
     public void insertarHash(String palabra) {
@@ -53,12 +48,12 @@ public class TArbolTrie implements ITArbolTrie {
         }
         raiz.insertarHash(palabra.toLowerCase());
     }
-    
-    public void insertarHash(String palabra,int posicion) {
+
+    public void insertarHash(String palabra, int posicion) {
         if (raiz == null) {
             raiz = new TNodoTrie();
         }
-        raiz.insertarHash(palabra.toLowerCase(),posicion);
+        raiz.insertarHash(palabra.toLowerCase(), posicion);
     }
 
     @Override
@@ -67,7 +62,7 @@ public class TArbolTrie implements ITArbolTrie {
             raiz.imprimirHash();
         }
     }
-    
+
     public void imprimirHashConPosicion() {
         if (raiz != null) {
             raiz.imprimirHashConPosicion();
@@ -76,8 +71,7 @@ public class TArbolTrie implements ITArbolTrie {
 
     @Override
     public int buscarHash(String palabra) {
-        if (raiz!=null)
-        {
+        if (raiz != null) {
             return raiz.buscarHash(palabra.toLowerCase());
         }
         return 0;
@@ -86,23 +80,21 @@ public class TArbolTrie implements ITArbolTrie {
     @Override
     public LinkedList<String> predecirHash(String prefijo) {
         LinkedList<String> lista = new LinkedList<>();
-        if (raiz!=null)
-        {
+        if (raiz != null) {
             raiz.predecirHash(prefijo.toLowerCase(), lista);
         }
         return lista;
     }
-    
+
     //IP FUNCTIONS
-    
     public void insertarIP(String ip) {
         if (raiz == null) {
             raiz = new TNodoTrie();
         }
         String[] arr = ip.split("-");
-        Pattern pattern = Pattern.compile("(^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$)");
+        Pattern pattern = Pattern.compile("^(?=.*[^\\.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$");
         Matcher matcher = pattern.matcher(arr[0]);
-        if(matcher.find()){
+        if (matcher.find()) {
             raiz.insertarIP(arr);
         }
     }
@@ -112,24 +104,24 @@ public class TArbolTrie implements ITArbolTrie {
             raiz.imprimirIP();
         }
     }
-    
+
     public TNodoTrie buscarIP(String ip) {
-        if (raiz!=null)
-        {
-            return raiz.buscarIP(ip);
+        if (raiz != null) {
+            Pattern pattern = Pattern.compile("^(?=.*[^\\.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$");
+            Matcher matcher = pattern.matcher(ip);
+            if (matcher.find()) {
+                return raiz.buscarIP(ip);
+            }
         }
         return null;
     }
 
-    public LinkedList<String> predecirIP(String prefijo) {
+    public LinkedList<String> predecirIP(String mascara) {
         LinkedList<String> lista = new LinkedList<>();
-        if (raiz!=null)
-        {
-            raiz.predecirHash(prefijo.toLowerCase(), lista);
+        if (raiz != null) {
+            raiz.predecirIP(mascara, lista);
         }
         return lista;
     }
-    
-    
-    
+
 }
