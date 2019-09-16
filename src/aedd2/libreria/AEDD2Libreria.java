@@ -48,27 +48,39 @@ public class AEDD2Libreria {
         
         System.out.println( trie.buscarHash("encontrar"));
          */
+        
+        /*
         ManejadorArchivosGenerico mag = new ManejadorArchivosGenerico();
         String[] lineas = mag.leerArchivo("src/aedd2/libreria/Libro Para PD4.txt");
         TArbolTrie trie = new TArbolTrie();
         TArbolTrie trie2 = new TArbolTrie();
-        for (int i = 0; i < lineas.length; i++) {
-            String[] palabras = lineas[i].split(" ");
-            for (int j = 0; j < palabras.length; j++) {
-                trie.insertarHash(palabras[j],j);
-                trie2.insertar(palabras[j]);
+        int contadorPalabras = 0;
+        for (String linea : lineas) {
+            String[] palabras = linea.split(" ");
+            for (String palabra : palabras) {
+                if (palabra.length() > 0) {
+                    trie.insertarHash(palabra, contadorPalabras);
+                    //trie2.insertar(palabras[j]);
+                    contadorPalabras++;
+                }
             }
+        */
             //DOCUMENTAL FOREACH
             /*
             ArrayList<String> linea = new ArrayList<>(Arrays.asList(lineas[i].split(" ")));
             linea.forEach(palabra -> trie.insertarHash(palabra));
-             */
-        }
-        LinkedList<String> list = trie.predecirHash("sher");
-        list.forEach(palabra -> System.out.println(palabra));
-        LinkedList<String> list2 = trie2.predecirHash("wh");
-        list2.forEach(palabra -> System.out.println(palabra));
-        
+            */
+        /*}*/
+        //trie.imprimirHash();
+        //trie.imprimirHashConPosicion();
+        //System.out.println("Se realizaron: "+  trie.buscarHash("a") + " comparaciones para hallar.");
+        //LinkedList<String> list = trie.predecirHash("sher");
+        //list.forEach(palabra -> System.out.println(palabra));
+        //LinkedList<String> list2 = trie2.predecirHash("wh");
+        //list2.forEach(palabra -> System.out.println(palabra));
+
+        TArbolTrie trieIP = new TArbolTrie();
+        trieIP.insertar(palabra);
     }
 
 }

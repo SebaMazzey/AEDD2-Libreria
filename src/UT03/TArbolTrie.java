@@ -65,6 +65,12 @@ public class TArbolTrie implements ITArbolTrie {
             raiz.imprimirHash();
         }
     }
+    
+    public void imprimirHashConPosicion() {
+        if (raiz != null) {
+            raiz.imprimirHashConPosicion();
+        }
+    }
 
     @Override
     public int buscarHash(String palabra) {

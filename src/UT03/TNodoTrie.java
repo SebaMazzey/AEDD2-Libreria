@@ -8,6 +8,7 @@ package UT03;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  *
@@ -19,13 +20,13 @@ public class TNodoTrie implements ITNodoTrie {
     private final TNodoTrie[] hijos;
     private boolean esPalabra;
     private final HashMap<String, TNodoTrie> hijosHash;
-    private ArrayList<Integer> posicion;
+    private final ArrayList<Integer> posicion;
 
     public TNodoTrie() {
         hijos = new TNodoTrie[CANT_CHR_ABECEDARIO];
         hijosHash = new HashMap();
         esPalabra = false;
-        posicion = null;
+        posicion = new ArrayList<>();
     }
 
     @Override
@@ -119,10 +120,11 @@ public class TNodoTrie implements ITNodoTrie {
     public void insertarHash(String palabra) {
         TNodoTrie nodo = this;
         for (int c = 0; c < palabra.length(); c++) {
+            TNodoTrie aux = nodo.hijosHash.get(palabra.charAt(c) + "");
             if (nodo.hijosHash.get(palabra.charAt(c) + "") == null) {
                 nodo.hijosHash.put(Character.toString(palabra.charAt(c)), new TNodoTrie());
             }
-            nodo = (TNodoTrie) nodo.hijosHash.get(palabra.charAt(c) + "");
+            nodo = aux;
         }
         nodo.esPalabra = true;
     }
@@ -130,10 +132,11 @@ public class TNodoTrie implements ITNodoTrie {
     public void insertarHash(String palabra, int posicion) {
         TNodoTrie nodo = this;
         for (int c = 0; c < palabra.length(); c++) {
-            if (nodo.hijosHash.get(palabra.charAt(c) + "") == null) {
+            TNodoTrie aux = nodo.hijosHash.get(palabra.charAt(c) + "");
+            if ( aux == null) {
                 nodo.hijosHash.put(Character.toString(palabra.charAt(c)), new TNodoTrie());
             }
-            nodo = (TNodoTrie) nodo.hijosHash.get(palabra.charAt(c) + "");
+            nodo = nodo.hijosHash.get(palabra.charAt(c) + "");
         }
         nodo.esPalabra = true;
         nodo.posicion.add(posicion);
@@ -155,8 +158,9 @@ public class TNodoTrie implements ITNodoTrie {
 
             }
             for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
-                if (nodo.hijosHash.get((char) (c + 'a') + "") != null) {
-                    imprimir(s + (char) (c + 'a'), (TNodoTrie) nodo.hijosHash.get((char) (c + 'a') + ""));
+                TNodoTrie aux = nodo.hijosHash.get((char) (c + 'a') + ""); 
+                if (aux != null) {
+                    imprimirHash(s + (char) (c + 'a'), (TNodoTrie) nodo.hijosHash.get((char) (c + 'a') + ""));
                 }
             }
         }
@@ -165,14 +169,17 @@ public class TNodoTrie implements ITNodoTrie {
     private void imprimirHashConPosicion(String s, TNodoTrie nodo) {
         if (nodo != null) {
             if (nodo.esPalabra) {
-                System.out.println(s);
+                System.out.println(s + ", \tAppears : " + nodo.posicion.size() + " time(s).");
 
             }
-            for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
-                if (nodo.hijosHash.get((char) (c + 'a') + "") != null) {
-                    imprimir(s + (char) (c + 'a'), (TNodoTrie) nodo.hijosHash.get((char) (c + 'a') + ""));
-                }
+            for (Map.Entry<String, TNodoTrie> entry : nodo.hijosHash.entrySet()) {
+                imprimirHashConPosicion(s+entry.getKey(), entry.getValue());
             }
+//            for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
+//                if (nodo.hijosHash.get((char) (c + 'a') + "") != null) {
+//                    imprimirHashConPosicion(s + (char) (c + 'a'), (TNodoTrie) nodo.hijosHash.get((char) (c + 'a') + ""));
+//                }
+//            }
         }
     }
 
@@ -211,7 +218,15 @@ public class TNodoTrie implements ITNodoTrie {
     
     @Override
     public int buscarHash(String palabra) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TNodoTrie nodo = this;
+        int count = 0;
+        boolean found = false;
+        for(int i=0;i<palabra.length();i++){
+            nodo = nodo.hijosHash.get(palabra.charAt(i)+"");
+            count++;
+            if(nodo == null) break;
+        }
+        return count;
     }
 
 }
