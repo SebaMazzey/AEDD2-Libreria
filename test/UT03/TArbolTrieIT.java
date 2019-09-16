@@ -12,27 +12,26 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author AX
  */
-public class TArbolTrieTest {
-
-    public TArbolTrieTest(){}
+public class TArbolTrieIT {
     
+    public TArbolTrieIT() {
+    }
+
+    TArbolTrie trie = new TArbolTrie();
+        
     @Test
     public void testBuscar() {
-        TArbolTrie trie = new TArbolTrie();
         trie.insertar("banana");
-        assertEquals(6, trie.buscar("banana"));
+        trie.insertar("anana");
+        trie.insertar("naranja");
+        assertEquals(null, trie.buscar("mandarina"));
     }
     @Test
     public void testBuscar2() {
-        TArbolTrie trie = new TArbolTrie();
         trie.insertar("banana");
-        assertEquals(4, trie.buscar("bana"));
-    }
-    @Test
-    public void testBuscar3() {
-        TArbolTrie trie = new TArbolTrie();
-        trie.insertar("banana");
-        assertEquals(1, trie.buscar(""));
+        trie.insertar("anana");
+        trie.insertar("naranja");
+        assertNotNull(trie.buscar("anana"));
     }
 
     @Test
@@ -61,6 +60,22 @@ public class TArbolTrieTest {
 
     @Test
     public void testPredecirHash() {
+    }
+
+    @Test
+    public void testInsertarIP() {
+    }
+
+    @Test
+    public void testImprimirIP() {
+    }
+
+    @Test
+    public void testBuscarIP() {
+    }
+
+    @Test
+    public void testPredecirIP() {
     }
     
 }

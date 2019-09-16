@@ -233,14 +233,13 @@ public class TNodoTrie implements ITNodoTrie {
 
     //IP Functions
     public void insertarIP(String[] arr) {
-        String[] ip = arr[0].split(".");
+        String[] ip = (arr[0]).split("\\.");
         TNodoTrie nodo = this;
-        for (int c = 0; c < 4; c++) {
-            TNodoTrie aux = nodo.hijosHash.get(ip[c]);
-            if (nodo.hijosHash.get(ip[c]) == null) {
-                nodo.hijosHash.put(ip[c], new TNodoTrie());
+        for (String c : ip) {
+            if (nodo.hijosHash.get(c) == null) {
+                nodo.hijosHash.put(c, new TNodoTrie());
             }
-            nodo = aux;
+            nodo = nodo.hijosHash.get(c);
         }
         nodo.esPalabra = true;
         nodo.nombreDispositivo = arr[1];
@@ -253,10 +252,10 @@ public class TNodoTrie implements ITNodoTrie {
     private void imprimirIP(String s, TNodoTrie nodo) {
         if (nodo != null) {
             if (nodo.esPalabra) {
-                System.out.println(s);
+                System.out.println(s.substring(1) + "-"+nodo.nombreDispositivo );
             }
             nodo.hijosHash.entrySet().forEach((entry) -> {
-                imprimirIP(s + "." + entry.getKey(), entry.getValue());
+                imprimirIP( s + "." + entry.getKey(), entry.getValue());
             });
         }
     }
@@ -272,14 +271,14 @@ public class TNodoTrie implements ITNodoTrie {
                 palabras.add(prefijo + s);
             }
             nodo.hijosHash.entrySet().forEach((entry) -> {
-                predecirHash(s + "." + entry.getKey(), prefijo, palabras, entry.getValue());
+                predecirIP(s + "." + entry.getKey(), prefijo, palabras, entry.getValue());
             });
         }
     }
 
     public TNodoTrie buscarIP(String s) {
         TNodoTrie nodo = this;
-        String[] arr = s.split(".");
+        String[] arr = s.split("\\.");
         for (String part : arr) {
             nodo = nodo.hijosHash.get(part);
             if (nodo == null) {
