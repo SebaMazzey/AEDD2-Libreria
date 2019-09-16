@@ -220,7 +220,6 @@ public class TNodoTrie implements ITNodoTrie {
     public int buscarHash(String palabra) {
         TNodoTrie nodo = this;
         int count = 0;
-        boolean found = false;
         for(int i=0;i<palabra.length();i++){
             nodo = nodo.hijosHash.get(palabra.charAt(i)+"");
             count++;

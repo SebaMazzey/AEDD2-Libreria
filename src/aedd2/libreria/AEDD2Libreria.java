@@ -80,7 +80,7 @@ public class AEDD2Libreria {
         //list2.forEach(palabra -> System.out.println(palabra));
 
         TArbolTrie trieIP = new TArbolTrie();
-        trieIP.insertar(palabra);
+        trieIP.insertar("192.168.1.1");
     }
 
 }
