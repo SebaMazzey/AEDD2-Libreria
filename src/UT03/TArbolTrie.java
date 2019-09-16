@@ -3,6 +3,8 @@ package UT03;
 
 
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class TArbolTrie implements ITArbolTrie {
@@ -90,6 +92,44 @@ public class TArbolTrie implements ITArbolTrie {
         }
         return lista;
     }
+    
+    //IP FUNCTIONS
+    
+    public void insertarIP(String ip) {
+        if (raiz == null) {
+            raiz = new TNodoTrie();
+        }
+        String[] arr = ip.split("-");
+        Pattern pattern = Pattern.compile("(^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$)");
+        Matcher matcher = pattern.matcher(arr[0]);
+        if(matcher.find()){
+            raiz.insertarIP(arr);
+        }
+    }
+
+    public void imprimirIP() {
+        if (raiz != null) {
+            raiz.imprimirIP();
+        }
+    }
+    
+    public TNodoTrie buscarIP(String ip) {
+        if (raiz!=null)
+        {
+            return raiz.buscarIP(ip);
+        }
+        return null;
+    }
+
+    public LinkedList<String> predecirIP(String prefijo) {
+        LinkedList<String> lista = new LinkedList<>();
+        if (raiz!=null)
+        {
+            raiz.predecirHash(prefijo.toLowerCase(), lista);
+        }
+        return lista;
+    }
+    
     
     
 }
