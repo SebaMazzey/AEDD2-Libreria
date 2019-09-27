@@ -2,6 +2,7 @@ package aedd2.libreria;
 
 import UT02.ITArbolGenerico.*;
 import UT03.*;
+import UT04.*;
 import UT00.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +80,7 @@ public class AEDD2Libreria {
         //LinkedList<String> list2 = trie2.predecirHash("wh");
         //list2.forEach(palabra -> System.out.println(palabra));
 
-        TArbolTrie trieIP = new TArbolTrie();
+        /*TArbolTrie trieIP = new TArbolTrie();
         trieIP.insertarIP("010.024.007.024-Dispositivo 1");
         trieIP.insertarIP("010.024.007.025-Dispositivo 2");
         trieIP.insertarIP("010.024.007.026-Dispositivo 3");
@@ -88,12 +89,34 @@ public class AEDD2Libreria {
         trieIP.insertarIP("010.251.008.037-Dispositivo 6");
         trieIP.insertarIP("010.251.008.038-Dispositivo 7");
         trieIP.insertarIP("010.251.008.039-Dispositivo 8");
-        
+        */
         //trieIP.imprimirIP();
         //System.err.println(trieIP.buscarIP("010.251.008.037"));
         //System.err.println(trieIP.buscarIP("010.251.008.700"));
-        trieIP.predecirIP("010.024.007").forEach(ip->System.out.println(ip));
-        trieIP.predecirIP("010.024.008").forEach(ip->System.out.println(ip));
+        //trieIP.predecirIP("010.024.007").forEach(ip->System.out.println(ip));
+        //trieIP.predecirIP("010.024.008").forEach(ip->System.out.println(ip));
+        
+        
+        TGrafoDirigido gd = new TGrafoDirigido();
+        TNodoGrafo nodo1 = new TNodoGrafo("A","dato1");
+        TNodoGrafo nodo2 = new TNodoGrafo("T","dato2");
+        TNodoGrafo nodo3 = new TNodoGrafo("H","dato3");
+        TNodoGrafo nodo4 = new TNodoGrafo("D","dato4");
+        TNodoGrafo nodo5 = new TNodoGrafo("A","dato5");
+        
+        System.out.println("Agregar Vertices");
+        System.out.println(gd.agregarVertice(nodo1));
+        System.out.println(gd.agregarVertice(nodo2));
+        System.out.println(gd.agregarVertice(nodo3));
+        System.out.println(gd.agregarVertice(nodo4));
+        System.out.println(gd.agregarVertice(nodo5));
+        
+        System.out.println("Agregar Adyacencias");
+        System.out.println(gd.agregarAdyacencia("P", "H", 0));
+        System.out.println(gd.agregarAdyacencia("A", "H", 0));
+        System.out.println(gd.agregarAdyacencia("A", "D", 0));
+        
+        gd.imprimir();
         
     }
 
