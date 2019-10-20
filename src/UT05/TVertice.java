@@ -99,24 +99,30 @@ public class TVertice<T> implements IVertice {
         setVisitado(true);
         visitados.add(this);
         int bpfTemp = this.getBPF();
-        int minBajo = this.getBPF();
+        int minBajo = this.getBajo();
+        int auxBPF = this.getBPF();
         for (TAdyacencia adyacente : adyacentes) {
             TVertice vertAdy = adyacente.getDestino();
             if (!vertAdy.getVisitado()) {
                 vertAdy.setBPF(++bpfTemp);
-                vertAdy.setBajo(this.getBPF());
-                minBajo = vertAdy.bpf(visitados);
-            } 
-            else {
+                vertAdy.setBajo(bpfTemp);
+                auxBPF = vertAdy.bpf(visitados);
+                if (auxBPF >= bpfTemp) {
+                    bpfTemp = auxBPF;
+                }
                 minBajo = vertAdy.getBajo();
+                if (minBajo < this.getBajo()) {
+                    this.setBajo(minBajo);
+                }
             }
+
         }
-        if (minBajo >= this.getBPF()) {
+        if (minBajo > this.getBPF()) {
             this.setArtPoint(true);
-        } /*else {
+        } else {
             this.setBajo(minBajo);
-        }*/
-        return this.getBajo();
+        }
+        return bpfTemp;
     }
 
     @Override

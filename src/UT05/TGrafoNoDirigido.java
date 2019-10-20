@@ -80,6 +80,9 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
             origen.setBajo(1);
             this.desvisitarVertices();
             origen.bpf(nuevaLista);
+            if(origen.getAdyacentes().size()<=1){
+                origen.setArtPoint(false);
+            }
             nuevaLista = new LinkedList<>();
             for(TVertice v:this.getVertices().values()){
                 if(v.getArtPoint()){
