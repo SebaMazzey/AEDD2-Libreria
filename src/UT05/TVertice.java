@@ -2,6 +2,7 @@ package UT05;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class TVertice<T> implements IVertice {
 
@@ -169,7 +170,21 @@ public class TVertice<T> implements IVertice {
 
     @Override
     public TVertice siguienteAdyacente(TVertice w) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TVertice siguiente = null;
+        for(TAdyacencia a : this.getAdyacentes()){
+            if(a.getDestino().getEtiqueta().equals(w.getEtiqueta())){
+                for(TAdyacencia ad : (LinkedList<TAdyacencia>) a.getDestino().getAdyacentes()){
+                    if(!ad.getDestino().getVisitado()){
+                        siguiente = ad.getDestino();
+                        break;
+                    }
+                }
+            }
+            if(siguiente!=null){
+                break;
+            }
+        }
+        return siguiente;
     }
 
     @Override
@@ -229,5 +244,74 @@ public class TVertice<T> implements IVertice {
     public void setArtPoint(boolean statement) {
         this.isArtPoint = statement;
     }
+
+    void puntosArticulacion(LinkedList<TVertice> puntosA) {
+        this.visitado = true;
+        for (TAdyacencia adyacente : adyacentes) {
+            TVertice aux = adyacente.getDestino();
+
+            if (!aux.visitado) {
+                if (aux.getBajo()<= this.getBPF()){
+
+                    puntosA.add(this);
+                }
+                aux.puntosArticulacion(puntosA);
+            }
+
+        }
+    }
+
+    void numerar(LinkedList<TVertice> listaAuxiliar, TVertice padre) {
+        this.visitado = true;
+        TVertice ultimo = listaAuxiliar.getLast();
+
+        this.setBPF(ultimo.getBPF()+1);
+        this.setBajo(ultimo.getBajo()+1);
+
+        listaAuxiliar.add(this);
+
+        for (TAdyacencia adyacente : adyacentes) {
+            TVertice hijo = adyacente.getDestino();
+            if (!hijo.visitado) {
+
+                hijo.numerar(listaAuxiliar, this);
+                this.setBajo(Integer.min(this.getBPF(),Integer.min(hijo.getBajo(), padre.getBPF())));
+            }
+            if (!hijo.equals(padre)) {
+                this.setBajo(Integer.min(this.getBajo(), hijo.getBajo()));
+            }
+        }
+    }
+    
+    public int numBacon(Collection<TVertice> visitados) {
+        setVisitado(true);
+        visitados.add(this);
+        Queue<TVertice> cola = new LinkedList<>();
+        cola.add(this);
+        if(etiqueta.equals("Kevin_Bacon")){
+            setBacon(0);
+            return getBacon();
+        }
+        int numNuevo = 0;
+        while(!cola.isEmpty()){
+            TVertice x = cola.remove();
+            setBacon(numNuevo);
+            for(TAdyacencia ady: (LinkedList<TAdyacencia>) x.adyacentes){
+                if(!ady.getDestino().visitado){
+                    ady.getDestino().setBacon(x.getBacon()+1);
+                    ady.getDestino().setVisitado(true);
+                    visitados.add(ady.getDestino());
+                    cola.add(ady.getDestino());
+                    if(ady.getDestino().etiqueta.equals("Kevin_Bacon")){
+                        return ady.getDestino().getBacon();
+                    }
+                }
+            }
+            numNuevo += 1;
+        }
+        return -1;
+    }
+
+
 
 }

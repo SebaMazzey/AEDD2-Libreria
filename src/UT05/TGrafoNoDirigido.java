@@ -1,6 +1,5 @@
 package UT05;
 
-
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,7 +44,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         Collection<Comparable> vertices = getVertices().keySet();
         TGrafoNoDirigido grafo = new TGrafoNoDirigido(this.getVertices().values(), new TAristas());
         universo.add(getLasAristas().getFirst().getEtiquetaOrigen());
-        while(!vertices.isEmpty()){
+        while (!vertices.isEmpty()) {
             TArista arista = lasAristas.buscarMin(universo, vertices);
             universo.add(arista.getEtiquetaDestino());
             grafo.insertarArista(arista);
@@ -79,7 +78,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         this.desvisitarVertices();
         Collection<TVertice> etiquetas = new LinkedList();
         TVertice verticeOrigen = this.getVertices().get(etiquetaOrigen);
-        if (verticeOrigen != null){
+        if (verticeOrigen != null) {
             verticeOrigen.setBacon(0);
             verticeOrigen.bea(etiquetas);
         }
@@ -88,8 +87,8 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 
     @Override
     public int numBacon(Comparable actor) {
-        for(Entry<Comparable,TVertice> en : this.getVertices().entrySet()){
-            if(en.getKey().equals(actor)){
+        for (Entry<Comparable, TVertice> en : this.getVertices().entrySet()) {
+            if (en.getKey().equals(actor)) {
                 return en.getValue().getBacon();
             }
         }
@@ -98,25 +97,29 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 
     @Override
     public Collection<TVertice> getArtPoints(Comparable etiqueta) {
-        LinkedList<TVertice> nuevaLista = new LinkedList<>();
-        TVertice origen = this.getVertices().get(etiqueta);
-        if(origen != null){
-            origen.setBPF(1);
-            origen.setBajo(1);
-            this.desvisitarVertices();
-            origen.bpf(nuevaLista);
-            if(origen.getAdyacentes().size()<=1){
-                origen.setArtPoint(false);
-            }
-            nuevaLista = new LinkedList<>();
-            for(TVertice v:this.getVertices().values()){
-                if(v.getArtPoint()){
-                    nuevaLista.add(v);
-                }
-            }
+        TVertice vertRaiz = this.getVertices().get(etiqueta);
+        LinkedList<TVertice> puntosA = new LinkedList<>();
+
+        if (vertRaiz != null) {
+            this.numerar(etiqueta);
+            vertRaiz.puntosArticulacion(puntosA);
+            puntosA.remove(etiqueta);
         }
-        
-        return nuevaLista;
+        return puntosA;
+
+    }
+
+    public void numerar(Comparable etiqueta) {
+        Comparable raiz = this.lasAristas.peek().etiquetaOrigen;
+        TVertice vertRaiz = this.getVertices().get(raiz);
+
+        LinkedList<TVertice> listaAuxiliar = new LinkedList<>();
+        vertRaiz.setBajo(0);
+
+        listaAuxiliar.add(vertRaiz);
+        vertRaiz.numerar(listaAuxiliar, vertRaiz);
+
+        this.desvisitarVertices();
     }
 
     @Override
