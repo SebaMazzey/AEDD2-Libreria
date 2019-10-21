@@ -41,12 +41,37 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 
     @Override
     public TGrafoNoDirigido Prim() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Collection<Comparable> universo = new LinkedList<>();
+        Collection<Comparable> vertices = getVertices().keySet();
+        TGrafoNoDirigido grafo = new TGrafoNoDirigido(this.getVertices().values(), new TAristas());
+        universo.add(getLasAristas().getFirst().getEtiquetaOrigen());
+        while(!vertices.isEmpty()){
+            TArista arista = lasAristas.buscarMin(universo, vertices);
+            universo.add(arista.getEtiquetaDestino());
+            grafo.insertarArista(arista);
+            grafo.lasAristas.add(arista);
+            vertices.removeAll(universo);
+        }
+        return grafo;
     }
 
     @Override
     public TGrafoNoDirigido Kruskal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TGrafoNoDirigido arbolAbarcador = new TGrafoNoDirigido(this.getVertices().values(), new TAristas());
+        Collection<Comparable> clavesVertices = this.getVertices().keySet();
+        TAristas ConjuntoSeleccion = (TAristas) this.lasAristas.clone();
+        boolean existeCamino;
+        TArista aristaMinima;
+        while (arbolAbarcador.lasAristas.size() < this.getVertices().size() - 1) {
+            aristaMinima = ConjuntoSeleccion.buscarMin(clavesVertices, clavesVertices);
+            ConjuntoSeleccion.remove(aristaMinima);
+            existeCamino = arbolAbarcador.todosLosCaminos(aristaMinima.etiquetaOrigen, aristaMinima.etiquetaDestino).getCaminos().size() > 0;
+            if (!existeCamino) {
+                arbolAbarcador.insertarArista(aristaMinima);
+                arbolAbarcador.lasAristas.add(aristaMinima);
+            }
+        }
+        return arbolAbarcador;
     }
 
     @Override
@@ -92,5 +117,10 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         }
         
         return nuevaLista;
+    }
+
+    @Override
+    public Collection<TVertice> AAM() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
