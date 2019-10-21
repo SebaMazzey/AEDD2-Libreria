@@ -109,16 +109,19 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 
     }
 
-    public LinkedList<TVertice> puntosArticulacion(){
-        Comparable raiz = this.lasAristas.peek().etiquetaOrigen;
-        this.numerar(raiz);
-        TVertice vertRaiz = this.getVertices().get(raiz);
+    public LinkedList<TVertice> puntosArticulacion(Comparable etiqueta) {
+        desvisitarVertices();
+        LinkedList<TVertice> respuesta = new LinkedList<>();
+        LinkedList<TVertice> visitados = new LinkedList<>();
+        if (this.existeVertice(etiqueta)) {
+            TVertice vertice = getVertices().get(etiqueta);
+            vertice.setBajo(1);
+            vertice.numerarBP(visitados);
+            desvisitarVertices();
+            vertice.puntosArticulacion(vertice, respuesta);
+        }
+        return respuesta;
 
-        LinkedList<TVertice> puntosA = new LinkedList<>();
-        vertRaiz.puntosArticulacion(puntosA);
-        puntosA.remove(raiz);
-
-        return puntosA;
     }
     
     public void numerar(Comparable etiqueta) {

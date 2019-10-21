@@ -342,4 +342,40 @@ public class TVertice<T> implements IVertice {
         lista.addFirst(this);
     }
 
+    public void numerarBP(LinkedList<TVertice> visitados) {
+        this.setVisitado(true);
+        visitados.add(this);
+        getAdyacentes().forEach((adyacencia) -> {
+            TVertice hijo = adyacencia.getDestino();
+            if (!hijo.getVisitado()) {
+                hijo.setBPF(visitados.getLast().getBPF() + 1);
+                hijo.setBajo(visitados.getLast().getBajo() + 1);
+                hijo.numerarBP(visitados);
+
+            }
+        });
+
+    }
+    
+    public void puntosArticulacion(TVertice padre, LinkedList<TVertice> puntosArt) {
+        setVisitado(true);
+        int contHijo = 0;
+        for (TAdyacencia tAdyacencia : getAdyacentes()) {
+            TVertice hijo = tAdyacencia.getDestino();
+            if (!hijo.getVisitado()) {
+                hijo.puntosArticulacion(this, puntosArt);
+                contHijo++;
+            }
+            if (hijo != padre && hijo.getVisitado()) {
+                this.setBajo(Integer.min(this.getBajo(), Integer.min(hijo.getBajo(), Integer.min(hijo.getBPF(), this.getBPF()))));
+            }
+            if (this.getBPF() == 1 && contHijo >= 2 && !puntosArt.contains(this)) {
+                puntosArt.add(this);
+            } else if (this.getBPF() != 1 && hijo.getBajo() >= this.getBPF() && !puntosArt.contains(this)) {
+                puntosArt.add(this);
+            }
+        }
+
+    }
+    
 }
