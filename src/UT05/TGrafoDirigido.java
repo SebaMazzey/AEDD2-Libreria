@@ -374,6 +374,18 @@ public class TGrafoDirigido implements IGrafoDirigido {
         return -1;
     }
 
+    public Collection<TVertice> numBaconDistancia(Comparable actor, int maxSaltos) {
+        desvisitarVertices();
+        Collection<TVertice> actores = new LinkedList<>();
+        TVertice vertice = getVertices().get(actor);
+        
+        if(vertice!=null)
+        {
+            vertice.numBaconDistancia(actores, maxSaltos);
+        }
+        return actores;
+    }
+    
     //
     public int obtenerMinimo(Double[] array, LinkedList<Integer> visitados) {
         Double min = Double.POSITIVE_INFINITY;

@@ -312,6 +312,26 @@ public class TVertice<T> implements IVertice {
         return -1;
     }
 
+    void numBaconDistancia(Collection<TVertice> actores, int maxSaltos) {
+        setVisitado(true);
+        Queue<TVertice> cola = new LinkedList<>();
+        cola.add(this);  
+        int numNuevo = 0;
+        while(!cola.isEmpty()){
+            TVertice x = cola.remove();
+            setBacon(numNuevo);
+            for(TAdyacencia ady: (LinkedList<TAdyacencia>) x.adyacentes){
+                ady.getDestino().setBacon(x.getBacon()+1);
+                if(!(ady.getDestino().visitado) && (ady.getDestino().getBacon() <= maxSaltos)){
+                    ady.getDestino().setVisitado(true);
+                    cola.add(ady.getDestino());
+                    actores.add(ady.getDestino());
+                }
+            }
+            numNuevo += 1;
+        }
+    }
+
 
 
 }
