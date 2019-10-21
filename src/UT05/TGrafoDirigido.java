@@ -117,7 +117,9 @@ public class TGrafoDirigido implements IGrafoDirigido {
     public Collection<TVertice> bea() {
         desvisitarVertices();
         LinkedList<TVertice> resultado = new LinkedList<>();
-        vertices.entrySet().stream().map((m) -> m.getValue()).filter((aux) -> (!aux.getVisitado())).forEachOrdered((aux) -> {
+        vertices.entrySet().stream().map((Map.Entry<Comparable, TVertice> m) -> {
+            return m.getValue();
+        }).filter((aux) -> (!aux.getVisitado())).forEachOrdered((aux) -> {
             aux.bea(resultado);
         });
         return resultado;
@@ -384,6 +386,17 @@ public class TGrafoDirigido implements IGrafoDirigido {
             vertice.numBaconDistancia(actores, maxSaltos);
         }
         return actores;
+    }
+    
+    public Collection<TVertice> clasificacionTopologica(Comparable etiquetaOrigen) {
+        desvisitarVertices();
+        LinkedList<TVertice> lista = new LinkedList<>();
+        if (!tieneCiclo()) {
+            TVertice vertice = vertices.get(etiquetaOrigen);
+            vertice.clasificacionTopologica(lista);
+        }
+        desvisitarVertices();
+        return lista;
     }
     
     //

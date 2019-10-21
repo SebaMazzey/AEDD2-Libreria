@@ -251,7 +251,7 @@ public class TVertice<T> implements IVertice {
             TVertice aux = adyacente.getDestino();
 
             if (!aux.visitado) {
-                if (aux.getBajo()<= this.getBPF()){
+                if (aux.getBajo()>= this.getBPF()){
 
                     puntosA.add(this);
                 }
@@ -332,6 +332,14 @@ public class TVertice<T> implements IVertice {
         }
     }
 
-
+    public void clasificacionTopologica(LinkedList<TVertice> lista) {
+        visitado = true;
+        for (IAdyacencia adyacente : adyacentes) {
+            if (!adyacente.getDestino().getVisitado()) {
+                adyacente.getDestino().clasificacionTopologica(lista);
+            }
+        }
+        lista.addFirst(this);
+    }
 
 }
