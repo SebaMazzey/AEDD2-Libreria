@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public interface IGrafoNoDirigido {
-
+    
     public Collection <TVertice> bea();
     public Collection <TVertice> bea(Comparable etiquetaOrigen);
     
@@ -16,8 +16,8 @@ public interface IGrafoNoDirigido {
 
     public TGrafoNoDirigido Kruskal();
     
-    public int numBacon(Comparable actor);
-    
     public Collection<TVertice> getArtPoints(Comparable origen);
+    
+    public Collection<TVertice> AAM();
 
 }
