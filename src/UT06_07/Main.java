@@ -22,7 +22,7 @@ public class Main {
      */
     public static void main(String args[]) {
         TClasificador clasif = new TClasificador();
-        int opcionDeClasificacion = 3; /* ELEGIR ALGORITMO */
+        int opcionDeClasificacion = 9; /* ELEGIR ALGORITMO */
 //        IGeneradorDatos gdg = new GeneradorDatosGenericos(10); /* TAMAÑO DE DATOS */
         
 
@@ -46,8 +46,10 @@ public class Main {
 //        }
 
         /* TEST AREA */
-        int[] testVector = {4,12,5,6,28,9,3,8,32,1};
+        int[] testVector = {97,19,61,07,34,25,82,56};
         clasif.clasificar(testVector, opcionDeClasificacion);
-        
+        for (int d : testVector) {
+            System.out.print(d + "-");
+        }
     }
 }

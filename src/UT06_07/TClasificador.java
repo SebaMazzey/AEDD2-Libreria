@@ -1,6 +1,7 @@
 package UT06_07;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 import sun.tools.jar.resources.jar;
 
@@ -11,6 +12,10 @@ public class TClasificador {
     public static final int METODO_CLASIFICACION_SHELLSORT = 3;
     public static final int METODO_CLASIFICACION_QUICKSORT = 4;
     public static final int METODO_CLASIFICACION_HEAPSORT = 5;
+    public static final int METODO_CLASIFICACION_SELECCION = 6;
+    public static final int METODO_CLASIFICACION_BIN = 7;
+    public static final int METODO_CLASIFICACION_RADIX = 8;
+    public static final int METODO_CLASIFICACION_CUENTAS = 9;
 
     public int[] clasificar(int[] datosParaClasificar, int metodoClasificacion) {
         if (datosParaClasificar == null) {
@@ -28,6 +33,14 @@ public class TClasificador {
                 return ordenarPorQuickSort(datosParaClasificar);
             case METODO_CLASIFICACION_HEAPSORT:
                 return ordenarPorHeapSort(datosParaClasificar);
+            case METODO_CLASIFICACION_SELECCION:
+                return ordenarPorSeleccion(datosParaClasificar);
+            case METODO_CLASIFICACION_BIN:
+                return ordenarPorBinsort(datosParaClasificar);
+            case METODO_CLASIFICACION_RADIX:
+                return ordenarPorRadixsort(datosParaClasificar);
+            case METODO_CLASIFICACION_CUENTAS:
+                return ordenarPorCuenta(datosParaClasificar, maximo(datosParaClasificar));
             default:
                 System.err.println("Este codigo no deberia haberse ejecutado");
                 break;
@@ -85,6 +98,30 @@ public class TClasificador {
                 } else {
                     return ordenarPorHeapSort(datosParaClasificar);
                 }
+            case METODO_CLASIFICACION_SELECCION:
+                if (cascara) {
+                    return ordenarPorCascara(datosParaClasificar);
+                } else {
+                    return ordenarPorSeleccion(datosParaClasificar);
+                }
+            case METODO_CLASIFICACION_BIN:
+                if (cascara) {
+                    return ordenarPorCascara(datosParaClasificar);
+                } else {
+                    return ordenarPorBinsort(datosParaClasificar);
+                }
+            case METODO_CLASIFICACION_RADIX:
+                if (cascara) {
+                    return ordenarPorCascara(datosParaClasificar);
+                } else {
+                    return ordenarPorRadixsort(datosParaClasificar);
+                }
+            case METODO_CLASIFICACION_CUENTAS:
+                if (cascara) {
+                    return ordenarPorCascara(datosParaClasificar);
+                } else {
+                    return ordenarPorCuenta(datosParaClasificar, maximo(datosParaClasificar));
+                }
             default:
                 System.err.println("Este codigo no deberia haberse ejecutado");
                 break;
@@ -117,24 +154,24 @@ public class TClasificador {
         int izquierda = i;
         int derecha = j;
         int posicionPivote = encuentraPivote(izquierda, derecha, entrada);
+        System.out.println("\nPivote: " + entrada[posicionPivote]);
         if (posicionPivote >= 0) {
-            while (izquierda <= derecha) {
+            while (izquierda < derecha) {
                 while ((entrada[izquierda] < entrada[posicionPivote]) && (izquierda < j)) {
                     izquierda++;
                 }
                 while ((entrada[posicionPivote] < entrada[derecha]) && (derecha > i)) {
                     derecha--;
                 }
-                
+
                 if (izquierda <= derecha) {
                     intercambiar(entrada, izquierda, derecha);
                     izquierda++;
                     derecha--;
                 }
             }
-            System.out.println("\nPivote: " + entrada[posicionPivote]);
             iterationPrint(entrada, quickProf++);
-            
+
             if (i < derecha) {
                 quicksort(entrada, i, derecha);
             }
@@ -142,15 +179,19 @@ public class TClasificador {
                 quicksort(entrada, izquierda, j);
             }
         }
+
     }
     private int quickProf = 1;
-    
+
     protected int[] ordenarPorQuickSort(int[] datosParaClasificar) {
         quicksort(datosParaClasificar, 0, datosParaClasificar.length - 1);
         return datosParaClasificar;
     }
 
     public int encuentraPivote(int izquierda, int derecha, int[] entrada) {
+        if (izquierda == derecha) {
+            return -1;
+        }
         return (int) (izquierda + derecha) / 2;
     }
 
@@ -179,6 +220,7 @@ public class TClasificador {
         return datosParaClasificar;
     }
 
+    /*BUBBLESORT*/
     private int[] ordenarPorBurbuja(int[] datosParaClasificar) {
         int n = datosParaClasificar.length - 1;
         for (int i = 0; i <= n; i++) {
@@ -191,6 +233,7 @@ public class TClasificador {
         return datosParaClasificar;
     }
 
+    /*HEAPSORT*/
     protected int[] ordenarPorHeapSort(int[] datosParaClasificar) {
         for (int i = (datosParaClasificar.length - 1) / 2; i >= 0; i--) { //Armo el heap inicial de n-1 div 2 hasta 0
             armaHeap(datosParaClasificar, i, datosParaClasificar.length - 1);
@@ -236,4 +279,109 @@ public class TClasificador {
         vector[pos2] = vector[pos1];
         vector[pos1] = temp;
     }
+
+    /*SELECCION DIRECTA*/
+    protected int[] ordenarPorSeleccion(int[] datosParaClasificar) {
+        for (int i = 0; i < datosParaClasificar.length - 1; i++) {
+            int indiceMenor = i;
+            int claveMenor = datosParaClasificar[i];
+            for (int j = i + 1; j < datosParaClasificar.length; j++) {
+                if (datosParaClasificar[j] < claveMenor) {
+                    indiceMenor = j;
+                    claveMenor = datosParaClasificar[j];
+                }
+            }
+            intercambiar(datosParaClasificar, i, indiceMenor);
+        }
+        return datosParaClasificar;
+    }
+
+    /*BINSORT*/
+    protected int[] ordenarPorBinsort(int[] datosParaClasificar) {
+        int max = maximo(datosParaClasificar);
+        int cifrasMax = numeroDeCifras(max);
+        return binsort(datosParaClasificar, cifrasMax, false);
+    }
+
+    private int[] binsort(int[] datosParaClasificar, int cifrasMax, boolean radix) {
+        ArrayList<Integer>[] urnas = new ArrayList[10];
+        for (int i = 0; i < urnas.length; i++) {
+            urnas[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < datosParaClasificar.length; i++) {
+            urnas[digitoEnPosicion(datosParaClasificar[i], cifrasMax)].add(datosParaClasificar[i]);
+        }
+        int ultimaPosicion = 0;
+        for (int i = 0; i < 10; i++) {
+            Integer[] urna = urnas[i].toArray(new Integer[urnas[i].size()]);
+            int[] urnaOrdenada = new int[urna.length];
+            for (int k = 0; k < urna.length; k++) {
+                urnaOrdenada[k] = urna[k];
+            }
+            if (!radix) {
+                urnaOrdenada = ordenarPorInsercion(urnaOrdenada);
+            }
+            urnas[i].clear();
+            for (int j = 0; j < urnaOrdenada.length; j++) {
+                datosParaClasificar[ultimaPosicion] = urnaOrdenada[j];
+                ultimaPosicion++;
+            }
+        }
+        return datosParaClasificar;
+    }
+
+    /*RADIXSORT*/
+    protected int[] ordenarPorRadixsort(int[] datosParaClasificar) {
+        int max = maximo(datosParaClasificar);
+        int cifrasMax = numeroDeCifras(max);
+        for (int i = 1; i <= cifrasMax; i++) {
+            datosParaClasificar = binsort(datosParaClasificar, i, true);
+        }
+        return datosParaClasificar;
+    }
+
+    /*DISTRIBUCION POR CUENTAS*/
+    protected int[] ordenarPorCuenta(int[] datosParaClasificar, int maximo) {
+        int[] cuenta = new int[maximo + 1];
+        for (int i = 0; i < datosParaClasificar.length; i++) {
+            cuenta[datosParaClasificar[i]]++;
+        }
+        for (int i = 1; i < maximo + 1; i++) {
+            cuenta[i] += cuenta[i - 1];
+        }
+        int[] salida = new int[datosParaClasificar.length];
+        for (int i = datosParaClasificar.length - 1; i >= 0; i--) {
+            int j = cuenta[datosParaClasificar[i]] - 1;
+            salida[j] = datosParaClasificar[i];
+            cuenta[datosParaClasificar[i]]--;
+        }
+        return salida;
+    }
+
+    private int digitoEnPosicion(int n, int pos) {
+        int a = n % (int) Math.pow(10, pos);
+        int x = (int) Math.pow(10, pos - 1);
+        if (a < x) {
+            return 0;
+        }
+        while (a >= 10) {
+            a = a / 10;
+        }
+        return a;
+    }
+
+    private int maximo(int[] datos) {
+        int max = Integer.MIN_VALUE;
+        for (int i : datos) {
+            if (i > max) {
+                max = i;
+            }
+        }
+        return max;
+    }
+
+    private int numeroDeCifras(int i) {
+        return (int) (Math.log10(i) + 1);
+    }
+
 }
