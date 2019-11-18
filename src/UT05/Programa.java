@@ -44,7 +44,7 @@ public class Programa {
                 "src/UT05/aristas_1.csv",
                 false, TGrafoNoDirigido.class);
 
-            Collection<TVertice> artPoints =  gnd.getArtPoints("E");
+            /*Collection<TVertice> artPoints =  gnd.getArtPoints("E");
             System.out.println("Puntos de Articulación: ");
             for(TVertice v : artPoints){
                 System.out.println(v.getEtiqueta() + " " + v.getBPF()  + " " + v.getBajo());
@@ -52,6 +52,10 @@ public class Programa {
             
             System.out.println("\n\nVer TODO: ");
             for(TVertice v : gnd.getVertices().values()){
+                System.out.println(v.getEtiqueta() + " " + v.getBPF()  + " " + v.getBajo());
+            }*/
+            Collection<TVertice> artPoints = gnd.puntosArticulacion("E");
+            for(TVertice v : artPoints){
                 System.out.println(v.getEtiqueta() + " " + v.getBPF()  + " " + v.getBajo());
             }
     }
