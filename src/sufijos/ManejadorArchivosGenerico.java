@@ -1,4 +1,4 @@
-package UT00;
+package sufijos;
 
 
 import java.io.BufferedReader;
@@ -9,8 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class ManejadorArchivosGenerico {
@@ -43,7 +41,7 @@ public class ManejadorArchivosGenerico {
 		try {
 			fr = new FileReader(nombreCompletoArchivo);
 			BufferedReader br = new BufferedReader(fr);
-			String lineaActual = br.readLine().toLowerCase();
+			String lineaActual = br.readLine();
 			while (lineaActual != null){
 				listaLineasArchivo.add(lineaActual);
 				lineaActual = br.readLine();
