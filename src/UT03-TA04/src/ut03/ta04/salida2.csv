@@ -1,0 +1,4 @@
+algoritmo,tiempo,memoria
+MedicionInsertarHashMap,232136800,1328896
+MedicionInsertarHashMap,149064400,1328896
+MedicionInsertarHashMap,288503600,1328896
