@@ -1,23 +1,22 @@
-package sufijos;
-
+package sufijosMap;
 
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 public class TNodoTrie implements INodoTrie {
 
-    private static final int CANT_CHR_ABECEDARIO = 26;
-    private TNodoTrie[] hijos;
+    private final TreeMap<Character, TNodoTrie> hijos;
     private boolean esPalabra;
     private int posicion;
 
     public TNodoTrie(int index) {
-        hijos = new TNodoTrie[CANT_CHR_ABECEDARIO];
+        hijos = new TreeMap<>();
         esPalabra = false;
         posicion = index;
     }
-    
+
     public TNodoTrie() {
-        hijos = new TNodoTrie[CANT_CHR_ABECEDARIO];
+        hijos = new TreeMap<>();
         esPalabra = false;
     }
 
@@ -26,27 +25,13 @@ public class TNodoTrie implements INodoTrie {
         TNodoTrie nodo = this;
         unaPalabra = unaPalabra.toLowerCase();
         for (int c = 0; c < unaPalabra.length(); c++) {
-            int indice = unaPalabra.charAt(c) - 'a';
-            if (nodo.hijos[indice] == null) {
-                nodo.hijos[indice] = new TNodoTrie(index);
+            char letra = unaPalabra.charAt(c);
+            if (nodo.hijos == null) {
+                nodo.hijos.put(letra, new TNodoTrie(c));
             }
-            nodo = nodo.hijos[indice];
+            nodo = nodo.hijos.get(letra);
         }
         nodo.esPalabra = true;
-    }
-
-    private void imprimir(String s, TNodoTrie nodo) {
-        if (nodo != null) {
-            if (nodo.esPalabra) {
-                if(nodo.posicion>-1)
-                    System.out.println(s + " - " + nodo.posicion);
-            }
-            for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
-                if (nodo.hijos[c] != null) {
-                    imprimir(s + (char) (c + 'a'), nodo.hijos[c]);
-                }
-            }
-        }
     }
 
     @Override
@@ -55,14 +40,26 @@ public class TNodoTrie implements INodoTrie {
         imprimir("", this);
     }
 
+    private void imprimir(String s, TNodoTrie nodo) {
+        if (nodo != null) {
+            if (nodo.esPalabra) {
+                if (nodo.posicion > -1) {
+                    System.out.println(s + " - " + nodo.posicion);
+                }
+            }
+
+            nodo.hijos.entrySet().forEach(hijo -> imprimir(s + hijo.getKey(), nodo.hijos.get(hijo.getKey())));
+
+        }
+    }
+
     private TNodoTrie buscarNodoTrie(String s) {
         TNodoTrie nodo = this;
-        for (int c = 0; c < s.length(); c++) {
-            int indice = s.charAt(c) - 'a';
-            if (nodo.hijos[indice] == null) {
+        for (char c : s.toCharArray()) {
+            nodo = nodo.hijos.get(c);
+            if (nodo == null) {
                 return null;
             }
-            nodo = nodo.hijos[indice];
         }
         return nodo;
     }
@@ -72,11 +69,7 @@ public class TNodoTrie implements INodoTrie {
             if (nodo.esPalabra) {
                 palabras.add(prefijo + s + " - " + nodo.posicion);
             }
-            for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
-                if (nodo.hijos[c] != null) {
-                    predecir(s + (char) (c + 'a'), prefijo, palabras, nodo.hijos[c]);
-                }
-            }
+            nodo.hijos.entrySet().forEach(hijo -> predecir(s + hijo.getKey(), prefijo, palabras, hijo.getValue()));
         }
     }
 
@@ -90,13 +83,12 @@ public class TNodoTrie implements INodoTrie {
     public int buscar(String s) {
         TNodoTrie nodo = this;
         int cont = 0;
-        for (int c = 0; c < s.length(); c++) {
-            int indice = s.charAt(c) - 'a';
+        for(char c : s.toCharArray()){
             cont++;
-            nodo = nodo.hijos[indice];
             if (nodo == null) {
                 return 0;
             }
+            nodo.hijos.get(c);
         }
         if (nodo.esPalabra) {
             return cont;

@@ -1,5 +1,6 @@
-package sufijos;
+package sufijosMap;
 
+import sufijos.*;
 import UT05.UtilGrafos;
 
 public class Main {

@@ -1,7 +1,8 @@
-package sufijos;
+package sufijosMap;
 
 
 
+import sufijos.*;
 import java.util.LinkedList;
 
 

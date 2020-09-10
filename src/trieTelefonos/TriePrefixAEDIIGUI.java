@@ -1,6 +1,9 @@
-package sufijos;
+package trieTelefonos;
 
+import java.util.ArrayList;
+import sufijos.*;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -24,9 +27,13 @@ public class TriePrefixAEDIIGUI extends javax.swing.JFrame {
         this.trie = new TArbolTrie();
         //TODO: CARGAR PALABRAS CON EL LECTOR DE ARCHIVOS GENÉRICO
 
-        //String patron = "ttctaatgtcccgacgctttatagcatcccatgcgattgcgaccttctcccctttatacgtctctacggtatgtttgtcgttcctctgtgtacgtctggtgcttcagtatcccgggtcggcaggaccgcccccggcgcaccgaagctgaacaagtatttaaacttgtgttcgcgacttgtctagattgatgtgttgtttcggtggactttatacctttctatatactgcgggttacgcatggcggttcctctttattctaagcttccactccattgcgcagcttagactcgattttttatttggcgggtcataaatctcacctctctgctcttccatattcggacagtcgggagattatgacgttgccatgtccgaccggtagataccagggacagacgcccggcgtgtaacggaaactgttccgctctcaccgtggtcacctcagcatatgtttcgtgtctcgtttgatggctcagctgggacgactagtacggtctggaagcgtagagctggcttcatgtacctctttcggtctttgtgcgcttcgtgttcctggggtgtcgtcccacgacatctgaagttagttgtcattaacccccccggcgccttgtcgaaaatatccaggcctagtatgcctgcggatgcctctatcgtgactcggttgctgtggtttagtttggactcttactccatactttaacccgttacctactggctctgttaatgcatggttacgcgcgtgtattccccggtctgcaaggttgtgtgcgatgaggtgcgaattcgcagcatcggacatacaggacagcgtggtcgggaatcgtccgcggccctgtgggccagtgatagtgaggtctacgtgagctaacatgctggatggttgggagggcttgtagtttcagatgtcgaaatgcaaccccgataacaccccgttaccttgtctgacgaccttaggtgcgtctgtaacggagactaagaccggtcacaagtcaatcggtg";
-        String patron = "banana";
-        trie.generarArbolSufijos(patron);
+        String[] telefonos = ManejadorArchivosGenerico.leerArchivo("src\\trieTelefonos\\abonados.txt");
+
+        for(String telefono : telefonos){
+            String[] data = telefono.split(",");
+            Abonado abonado = new Abonado(data[1], data[0]);
+            trie.insertar(abonado);
+        }
         
         initComponents();
     }
@@ -101,9 +108,9 @@ public class TriePrefixAEDIIGUI extends javax.swing.JFrame {
     private void jtfSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfSearchKeyReleased
         DefaultListModel listModel = new DefaultListModel();
         jListPalabras.clearSelection();
-        LinkedList<String> palabras;
+        List<String> palabras;
         //TODO: LLENAR LISTA DE PALABRAS CON EL MÉTODO PREDECIR
-        palabras = this.trie.predecir(jtfSearch.getText());
+        palabras = new ArrayList(this.trie.predecir(jtfSearch.getText()));
         palabras.forEach((palabra) -> {
             listModel.addElement(palabra);
         });
@@ -139,6 +146,7 @@ public class TriePrefixAEDIIGUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TriePrefixAEDIIGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
