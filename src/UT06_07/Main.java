@@ -22,34 +22,36 @@ public class Main {
      */
     public static void main(String args[]) {
         TClasificador clasif = new TClasificador();
-        int opcionDeClasificacion = 9; /* ELEGIR ALGORITMO */
-//        IGeneradorDatos gdg = new GeneradorDatosGenericos(10); /* TAMAÑO DE DATOS */
-        
+        GeneradorDatosGenericos gdg300 = new GeneradorDatosGenericos(300);
+        GeneradorDatosGenericos gdg10000 = new GeneradorDatosGenericos(10000);
+        int[] vectorAleatorio300 = gdg300.generarDatosAleatorios();
+        int[] vectorAscendente300 = gdg300.generarDatosAscendentes();
+        int[] vectorDescendente300 = gdg300.generarDatosDescendentes();
 
+        int[] vectorAleatorio10000 = gdg10000.generarDatosAleatorios();
+        int[] vectorAscendente10000 = gdg10000.generarDatosAscendentes();
+        int[] vectorDescendente10000 = gdg10000.generarDatosDescendentes();
 
-//        int[] vectorAleatorio = gdg.generarDatosAleatorios();
-//        int[] vectorAscendente = gdg.generarDatosAscendentes();
-//        int[] vectorDescendente = gdg.generarDatosDescendentes();
+        for (int i = 1; i <= 4; i++) {
+            System.out.println("Caso N°" + i);
+            int[] aleatorioCopia = vectorAleatorio300.clone();
+            int[] ascendenteCopia = vectorAscendente300.clone();
+            int[] descendenteCopia = vectorDescendente300.clone();
 
-//        clasif.clasificar(vectorAleatorio, opcionDeClasificacion);
-//
-//        Contador contadorAl = new Contador(vectorAleatorio, opcionDeClasificacion);
-//        Contador contadorAs = new Contador(vectorAscendente, opcionDeClasificacion);
-//        Contador contadorDes = new Contador(vectorDescendente, opcionDeClasificacion);
+            long initAs = System.nanoTime();
+            clasif.clasificar(ascendenteCopia, i);
+            long finAs = System.nanoTime();
+            System.out.println("Tiempo Ascendente = " + (finAs - initAs));
 
-//        System.out.println("Tiempo Algoritmo Aleatorio: " + contadorAl.Margen() / 1000000.0 + " milisegundos.");
-//        System.out.println("Tiempo Algoritmo Ascendente: "+contadorAs.Margen()/1000000.0+" milisegundos.");
-//        System.out.println("Tiempo Algoritmo Descendente: "+contadorDes.Margen()/1000000.0+" milisegundos.");
+            long initDes = System.nanoTime();
+            clasif.clasificar(descendenteCopia, i);
+            long finDes = System.nanoTime();
+            System.out.println("Tiempo Descendente = " + (finDes - initDes));
 
-//        for (int i : vectorAleatorio) {
-//            System.out.println(i);
-//        }
-
-        /* TEST AREA */
-        int[] testVector = {97,19,61,07,34,25,82,56};
-        clasif.clasificar(testVector, opcionDeClasificacion);
-        for (int d : testVector) {
-            System.out.print(d + "-");
+            long initAl = System.nanoTime();
+            clasif.clasificar(aleatorioCopia, i);
+            long finAl = System.nanoTime();
+            System.out.println("Tiempo Aleatorio = " + (finAl - initAl));
         }
     }
 }
